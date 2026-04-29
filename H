@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bunny — Магазин іграшок</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   ІНСТРУКЦІЯ ДЛЯ РЕДАГУВАННЯ:
+   
+   1. ДОДАТИ ТОВАР → знайди <div class="products-grid">
+      та скопіюй один блок <div class="product">...</div>
+   
+   2. ЗМІНИТИ ПОСИЛАННЯ → знайди href="https://bunny.com.ua/..."
+      та замін на потрібний URL
+   
+   3. ЗРОБИТИ КНОПКУ АКТИВНОЮ → знайди <a href="#" class="btn">
+      та замін # на реальне посилання, наприклад:
+      <a href="https://bunny.com.ua/product_list" class="btn">
+   
+   4. ЗМІНИТИ ТЕЛЕФОН → знайди +380 (63) 819-19-93
+   
+   5. ЗМІНИТИ ФОТО ТОВАРУ → замін src="..." на URL фото
+   ============================================= */
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #0a0a0a;
+  --white: #fafafa;
+  --gray: #888;
+  --light: #f2f2f0;
+  --mid: #d0d0cc;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+}
+
+/* ---- NAV ---- */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--mid);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 2.5rem;
+  height: 56px;
+}
+.nav-links {
+  display: flex; gap: 2rem;
+  list-style: none;
+}
+.nav-links a {
+  /* ▶ ПОСИЛАННЯ НАВІГАЦІЇ: змін href у тегу <a> */
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--black);
+  text-decoration: none;
+  opacity: 0.55;
+  transition: opacity 0.2s;
+}
+.nav-links a:hover { opacity: 1; }
+.nav-logo {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  color: var(--black);
+}
+.nav-right {
+  display: flex; gap: 1.5rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+.nav-icon {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--black);
+  opacity: 0.55;
+  transition: opacity 0.2s;
+}
+.nav-icon:hover { opacity: 1; }
+
+/* ---- HERO ---- */
+.hero {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 56px);
+}
+.hero-img {
+  /* ▶ ГОЛОВНЕ ЗОБРАЖЕННЯ: замін background-image на URL фото */
+  background: var(--light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+.hero-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  /* якщо немає фото — показується placeholder */
+}
+.hero-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  opacity: 0.18;
+  height: 100%;
+}
+.hero-placeholder svg { width: 120px; }
+.hero-placeholder p { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; }
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem 5rem 5rem 6rem;
+}
+.hero-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 2rem;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-weight: 400;
+  line-height: 1.05;
+  margin-bottom: 2rem;
+}
+.hero-title em {
+  font-style: italic;
+  display: block;
+}
+.hero-desc {
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--gray);
+  max-width: 360px;
+  margin-bottom: 3rem;
+}
+
+/* ---- КНОПКИ ----
+   ▶ ЯК ЗРОБИТИ КНОПКУ АКТИВНОЮ:
+   Знайди <a href="#" class="btn"> або <a href="#" class="btn-outline">
+   Замін # на реальне посилання:
+   Приклад: <a href="https://bunny.com.ua/product_list" class="btn">
+*/
+.btn {
+  display: inline-block;
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1rem 2.5rem;
+  border: 1px solid var(--black);
+  transition: background 0.25s, color 0.25s;
+  cursor: pointer;
+}
+.btn:hover { background: transparent; color: var(--black); }
+
+.btn-outline {
+  display: inline-block;
+  background: transparent;
+  color: var(--black);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1rem 2.5rem;
+  border: 1px solid var(--black);
+  transition: background 0.25s, color 0.25s;
+  cursor: pointer;
+}
+.btn-outline:hover { background: var(--black); color: var(--white); }
+
+/* ---- BANNER STRIP ---- */
+.strip {
+  background: var(--black);
+  color: var(--white);
+  text-align: center;
+  padding: 0.75rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+/* ---- CATEGORIES ---- */
+.categories {
+  padding: 5rem 2.5rem;
+}
+.section-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 0.75rem;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 400;
+  margin-bottom: 3rem;
+}
+.section-title em { font-style: italic; }
+
+/* ▶ СІТКА КАТЕГОРІЙ: 3 колонки */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.cat-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--black);
+  display: block;
+}
+/* ▶ ЯК ЗМІНИТИ ФОТО КАТЕГОРІЇ: 
+   Знайди style="background: ..." у .cat-img 
+   та додай background-image: url('URL_ФОТО') */
+.cat-img {
+  aspect-ratio: 3/4;
+  background: var(--light);
+  display: flex;
+  align-items: flex-end;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.cat-item:hover .cat-img { transform: scale(1.02); }
+.cat-placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4rem;
+  opacity: 0.12;
+}
+.cat-label {
+  position: relative;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  background: var(--white);
+  padding: 0.5rem 1rem;
+}
+
+/* ---- PRODUCTS ----
+   ▶ ЯК ДОДАТИ ТОВАР:
+   Скопіюй один блок нижче та встав після останнього <div class="product">
+   
+   <div class="product">
+     <a href="ПОСИЛАННЯ_НА_ТОВАР" class="product-img-wrap">
+       <div class="product-img" style="background: #f0ede8;">
+         <div class="prod-placeholder">🧸</div>
+       </div>
+     </a>
+     <div class="product-info">
+       <p class="product-name">НАЗВА ТОВАРУ</p>
+       <p class="product-price">XXX ₴</p>
+     </div>
+   </div>
+*/
+.products-section {
+  padding: 5rem 2.5rem;
+  border-top: 1px solid var(--mid);
+}
+.products-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+}
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+.product {
+  cursor: pointer;
+}
+.product-img-wrap {
+  display: block;
+  text-decoration: none;
+  overflow: hidden;
+}
+.product-img {
+  aspect-ratio: 3/4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.product:hover .product-img { transform: scale(1.04); }
+.prod-placeholder {
+  font-size: 3.5rem;
+  opacity: 0.35;
+}
+.product-img img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.product-info {
+  padding: 0.9rem 0 1.5rem;
+}
+.product-name {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+.product-price {
+  font-size: 0.85rem;
+  color: var(--gray);
+}
+.product-badge {
+  position: absolute;
+  top: 12px; left: 12px;
+  background: var(--black);
+  color: var(--white);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  padding: 3px 8px;
+  text-transform: uppercase;
+}
+
+/* ---- PROMO BANNER ---- */
+.promo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 60vh;
+}
+.promo-img {
+  background: #e8e4dc;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 5rem;
+  opacity: 0.3;
+}
+.promo-text {
+  background: var(--black);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem;
+}
+.promo-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 1.5rem;
+}
+.promo-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+.promo-title em { font-style: italic; }
+.promo-desc {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--mid);
+  margin-bottom: 2.5rem;
+  max-width: 360px;
+}
+.btn-white {
+  display: inline-block;
+  background: var(--white);
+  color: var(--black);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1rem 2.5rem;
+  border: 1px solid var(--white);
+  transition: background 0.25s, color 0.25s;
+}
+.btn-white:hover { background: transparent; color: var(--white); }
+
+/* ---- INFO BLOCKS ---- */
+.info-blocks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--mid);
+  border-bottom: 1px solid var(--mid);
+}
+.info-block {
+  padding: 3rem 2.5rem;
+  border-right: 1px solid var(--mid);
+  text-align: center;
+}
+.info-block:last-child { border-right: none; }
+.info-icon { font-size: 1.4rem; margin-bottom: 1rem; opacity: 0.5; }
+.info-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.info-text { font-size: 0.82rem; color: var(--gray); line-height: 1.6; }
+
+/* ---- CONTACTS ---- */
+.contacts {
+  padding: 5rem 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+  border-top: 1px solid var(--mid);
+}
+.contacts-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 3vw, 3rem);
+  margin-bottom: 2rem;
+}
+.contacts-title em { font-style: italic; }
+.contact-list { list-style: none; }
+.contact-list li {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--mid);
+  font-size: 0.85rem;
+}
+.contact-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray);
+  width: 100px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+.contact-value { color: var(--black); }
+.contact-value a { color: var(--black); text-decoration: none; }
+.contact-value a:hover { text-decoration: underline; }
+
+/* Schedule table */
+.schedule {
+  border: 1px solid var(--mid);
+}
+.schedule-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--mid);
+  font-size: 0.8rem;
+}
+.schedule-row:last-child { border-bottom: none; }
+.schedule-day { color: var(--gray); }
+.schedule-row.today { background: var(--black); color: var(--white); }
+.schedule-row.today .schedule-day { color: var(--mid); }
+
+/* ---- FOOTER ---- */
+footer {
+  background: var(--black);
+  color: var(--white);
+  padding: 4rem 2.5rem 2rem;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+.footer-logo-big {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.footer-tagline { font-size: 0.8rem; color: #666; line-height: 1.7; }
+.footer-col-title {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #555;
+  margin-bottom: 1.2rem;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 0.6rem; }
+.footer-col a {
+  font-size: 0.82rem;
+  color: #888;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--white); }
+.footer-bottom {
+  border-top: 1px solid #222;
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: #444;
+}
+
+/* ---- REVEAL ANIMATION ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  nav { padding: 0 1.5rem; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-img { min-height: 50vw; }
+  .hero-text { padding: 3rem 1.5rem; }
+  .cat-grid { grid-template-columns: 1fr 1fr; }
+  .products-grid { grid-template-columns: 1fr 1fr; }
+  .promo { grid-template-columns: 1fr; }
+  .promo-img { min-height: 200px; }
+  .info-blocks { grid-template-columns: 1fr; }
+  .info-block { border-right: none; border-bottom: 1px solid var(--mid); }
+  .contacts { grid-template-columns: 1fr; gap: 3rem; padding: 3rem 1.5rem; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .categories, .products-section { padding: 3rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ НАВІГАЦІЯ ============ -->
+<nav>
+  <ul class="nav-links">
+    <!-- ▶ ПОСИЛАННЯ НАВІГАЦІЇ: замін # на реальні URL -->
+    <li><a href="https://bunny.com.ua/product_list">Каталог</a></li>
+    <li><a href="https://bunny.com.ua/news">Акції</a></li>
+    <li><a href="https://bunny.com.ua/delivery_info">Доставка</a></li>
+  </ul>
+
+  <!-- ▶ ЛОГОТИП: замін href якщо потрібно -->
+  <a href="https://bunny.com.ua" class="nav-logo">Bunny</a>
+
+  <div class="nav-right">
+    <!-- ▶ ТУТ МОЖНА ДОДАТИ КОШИК АБО ПОШУК -->
+    <a href="https://bunny.com.ua/contacts" class="nav-icon">Контакти</a>
+    <a href="tel:+380638191993" class="nav-icon">+380 63 819-19-93</a>
+  </div>
+</nav>
+
+<!-- ============ БАНЕР ============ -->
+<div class="strip">
+  Безкоштовна доставка від 1000 ₴ · Нова пошта по всій Україні · Пн–Сб 10:00–18:30
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-img">
+    <!-- ▶ ГОЛОВНЕ ЗОБРАЖЕННЯ: 
+         Варіант 1: <img src="URL_ФОТО" alt="Bunny іграшки">
+         Варіант 2: поки що показується placeholder -->
+    <div class="hero-placeholder" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" opacity="0.15" width="180">
+        <circle cx="100" cy="110" r="55" stroke="#0a0a0a" stroke-width="1.5"/>
+        <ellipse cx="75" cy="55" rx="18" ry="40" stroke="#0a0a0a" stroke-width="1.5"/>
+        <ellipse cx="125" cy="55" rx="18" ry="40" stroke="#0a0a0a" stroke-width="1.5"/>
+        <circle cx="85" cy="105" r="5" fill="#0a0a0a"/>
+        <circle cx="115" cy="105" r="5" fill="#0a0a0a"/>
+        <path d="M88 125 Q100 135 112 125" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+  <div class="hero-text">
+    <p class="hero-tag">Новинки 2025</p>
+    <h1 class="hero-title">
+      Іграшки,<br>
+      <em>що надихають</em><br>
+      та розвивають
+    </h1>
+    <p class="hero-desc">
+      Магазин Bunny у Черкасах — розвиваючі іграшки, м'які друзі та подарунки для дітей будь-якого віку. Доставка по всій Україні.
+    </p>
+    <!-- ▶ АКТИВНА КНОПКА: вже веде на каталог -->
+    <a href="https://bunny.com.ua/product_list" class="btn">Переглянути каталог</a>
+  </div>
+</section>
+
+<!-- ============ КАТЕГОРІЇ ============ -->
+<section class="categories reveal">
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:3rem;">
+    <div>
+      <p class="section-label">Асортимент</p>
+      <h2 class="section-title">Для кожного <em>віку</em></h2>
+    </div>
+    <!-- ▶ АКТИВНЕ ПОСИЛАННЯ -->
+    <a href="https://bunny.com.ua/product_list" class="btn-outline">Весь каталог</a>
+  </div>
+  <div class="cat-grid">
+    <!-- ▶ КАТЕГОРІЯ 1: замін href та emoji/колір -->
+    <a href="https://bunny.com.ua/product_list" class="cat-item">
+      <div class="cat-img" style="background: #ede8e0;">
+        <div class="cat-placeholder">🧸</div>
+        <span class="cat-label">М'які іграшки</span>
+      </div>
+    </a>
+    <!-- ▶ КАТЕГОРІЯ 2 -->
+    <a href="https://bunny.com.ua/product_list" class="cat-item">
+      <div class="cat-img" style="background: #dde8e0;">
+        <div class="cat-placeholder">🎨</div>
+        <span class="cat-label">Творчість</span>
+      </div>
+    </a>
+    <!-- ▶ КАТЕГОРІЯ 3 -->
+    <a href="https://bunny.com.ua/product_list" class="cat-item">
+      <div class="cat-img" style="background: #e8e0de;">
+        <div class="cat-placeholder">🧩</div>
+        <span class="cat-label">Розвиваючі ігри</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ============ ТОВАРИ ============ -->
+<section class="products-section reveal">
+  <div class="products-header">
+    <div>
+      <p class="section-label">Вибір редакції</p>
+      <h2 class="section-title"><em>Популярні</em> товари</h2>
+    </div>
+    <a href="https://bunny.com.ua/product_list" class="btn-outline">Дивитись все</a>
+  </div>
+
+  <div class="products-grid">
+    <!--
+      ▶ ЯК ДОДАТИ СВІЙ ТОВАР:
+      1. Скопіюй блок нижче
+      2. Замін href на посилання на товар
+      3. Замін background в .product-img на колір або додай <img>
+      4. Замін emoji на фото або залиш
+      5. Замін назву та ціну
+    -->
+
+    <!-- ТОВАР 1 -->
+    <div class="product">
+      <a href="https://bunny.com.ua/product_list" class="product-img-wrap">
+        <div class="product-img" style="background: #f0ebe3;">
+          <!-- ▶ ФОТО ТОВАРУ: <img src="URL" alt="назва"> -->
+          <div class="prod-placeholder">🐰</div>
+          <span class="product-badge">Новинка</span>
+        </div>
+      </a>
+      <div class="product-info">
+        <p class="product-name">М'який зайчик</p>
+        <p class="product-price">від 350 ₴</p>
+      </div>
+    </div>
+
+    <!-- ТОВАР 2 -->
+    <div class="product">
+      <a href="https://bunny.com.ua/product_list" class="product-img-wrap">
+        <div class="product-img" style="background: #e3eaee;">
+          <div class="prod-placeholder">🎭</div>
+          <span class="product-badge">Хіт</span>
+        </div>
+      </a>
+      <div class="product-info">
+        <p class="product-name">Набір для творчості</p>
+        <p class="product-price">від 280 ₴</p>
+      </div>
+    </div>
+
+    <!-- ТОВАР 3 -->
+    <div class="product">
+      <a href="https://bunny.com.ua/product_list" class="product-img-wrap">
+        <div class="product-img" style="background: #e8ede3;">
+          <div class="prod-placeholder">🧩</div>
+        </div>
+      </a>
+      <div class="product-info">
+        <p class="product-name">Розвиваюча гра</p>
+        <p class="product-price">від 420 ₴</p>
+      </div>
+    </div>
+
+    <!-- ТОВАР 4 -->
+    <div class="product">
+      <a href="https://bunny.com.ua/product_list" class="product-img-wrap">
+        <div class="product-img" style="background: #ede3e8;">
+          <div class="prod-placeholder">🎁</div>
+          <span class="product-badge">-20%</span>
+        </div>
+      </a>
+      <div class="product-info">
+        <p class="product-name">Подарунковий набір</p>
+        <p class="product-price">від 650 ₴</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROMO BANNER ============ -->
+<section class="promo reveal">
+  <div class="promo-img">🎀</div>
+  <div class="promo-text">
+    <p class="promo-tag">Акція · Тільки зараз</p>
+    <h2 class="promo-title">Знижки до<br><em>30% на подарунки</em></h2>
+    <p class="promo-desc">
+      Вибирайте подарунки для дітей зі знижкою. Швидка доставка Новою поштою по всій Україні.
+    </p>
+    <!-- ▶ КНОПКА АКЦІЇ: замін href -->
+    <a href="https://bunny.com.ua/news" class="btn-white">Дивитись акції</a>
+  </div>
+</section>
+
+<!-- ============ ПЕРЕВАГИ ============ -->
+<div class="info-blocks reveal">
+  <div class="info-block">
+    <div class="info-icon">📦</div>
+    <p class="info-title">Доставка по Україні</p>
+    <p class="info-text">Нова пошта, Укрпошта.<br>Безкоштовно від 1000 ₴</p>
+  </div>
+  <div class="info-block">
+    <div class="info-icon">✓</div>
+    <p class="info-title">Оригінальні товари</p>
+    <p class="info-text">Тільки перевірені виробники.<br>Сертифіковані іграшки</p>
+  </div>
+  <div class="info-block">
+    <div class="info-icon">↩</div>
+    <p class="info-title">Повернення та обмін</p>
+    <p class="info-text">Протягом 14 днів<br>без зайвих питань</p>
+  </div>
+</div>
+
+<!-- ============ КОНТАКТИ ============ -->
+<section class="contacts reveal">
+  <div>
+    <p class="section-label">Ми поруч</p>
+    <h2 class="contacts-title">Приходьте<br><em>у магазин</em></h2>
+    <ul class="contact-list">
+      <li>
+        <span class="contact-label">Адреса</span>
+        <span class="contact-value">Бул. Шевченка 205,<br>Черкаси, Україна</span>
+      </li>
+      <li>
+        <span class="contact-label">Телефон</span>
+        <!-- ▶ ТЕЛЕФОН: замін номер -->
+        <span class="contact-value"><a href="tel:+380638191993">+380 (63) 819-19-93</a></span>
+      </li>
+      <li>
+        <span class="contact-label">Email</span>
+        <!-- ▶ EMAIL: замін адресу -->
+        <span class="contact-value"><a href="mailto:mybunny460@gmail.com">mybunny460@gmail.com</a></span>
+      </li>
+    </ul>
+  </div>
+  <div>
+    <p class="section-label" style="margin-bottom:1.5rem;">Графік роботи</p>
+    <!-- ▶ РОЗКЛАД: замін час якщо потрібно -->
+    <div class="schedule">
+      <div class="schedule-row"><span class="schedule-day">Понеділок–П'ятниця</span><span>10:00 – 18:30</span></div>
+      <div class="schedule-row"><span class="schedule-day">Субота</span><span>10:00 – 18:30</span></div>
+      <div class="schedule-row"><span class="schedule-day">Неділя</span><span>10:00 – 18:00</span></div>
+    </div>
+    <div style="margin-top:2rem;">
+      <a href="https://bunny.com.ua/contacts" class="btn">Зв'язатись з нами</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo-big">Bunny</div>
+      <p class="footer-tagline">Магазин іграшок у Черкасах.<br>Радість для дітей з 2018 року.</p>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Каталог</p>
+      <ul>
+        <!-- ▶ ПОСИЛАННЯ FOOTER: замін href -->
+        <li><a href="https://bunny.com.ua/product_list">Всі товари</a></li>
+        <li><a href="https://bunny.com.ua/news">Акції та знижки</a></li>
+        <li><a href="https://bunny.com.ua/articles">Статті</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Інформація</p>
+      <ul>
+        <li><a href="https://bunny.com.ua/delivery_info">Умови доставки</a></li>
+        <li><a href="https://bunny.com.ua/return_policy">Повернення</a></li>
+        <li><a href="https://bunny.com.ua/contacts">Співпраця</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Контакти</p>
+      <ul>
+        <li><a href="tel:+380638191993">+380 (63) 819-19-93</a></li>
+        <li><a href="mailto:mybunny460@gmail.com">mybunny460@gmail.com</a></li>
+        <li><a href="https://bunny.com.ua/contacts">Черкаси, бул. Шевченка 205</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Bunny.com.ua — Магазин іграшок у Черкасах</span>
+    <span>Всі права захищені</span>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(r => obs.observe(r));
+</script>
+</body>
+</html>
